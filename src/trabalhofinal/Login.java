@@ -8,6 +8,7 @@ package trabalhofinal;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,17 +19,16 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
     
-    PrintStream server;
-    
     public Login() {
-         try {
-            Socket cliente = new Socket("localhost", 12345);
-            System.out.println("o cliente se conectou ao servidor");
-            server = new PrintStream(cliente.getOutputStream());
+        try {
+            if (!Connection.isConnected()) {
+                String ip = JOptionPane.showInputDialog("IP:");
+                Connection.connect(ip, 12345);
+            }
             initComponents();
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }   
     }
 
     /**
@@ -110,13 +110,13 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        server.println("Login " + jTextField1.getText()+" "+jPasswordField1.getText());
-        if(true){
-            Relatorio relatorio = new Relatorio();
-            relatorio.setVisible(true);
+        String response = Connection.run("Login:" + jTextField1.getText()+":"+jPasswordField1.getText());
+        
+        if(response.equalsIgnoreCase("SUCCESS:Logado com sucesso.")){
+            Main main = new Main();
+            main.setVisible(true);
             dispose();
         }else{
-            JOptionPane.showMessageDialog(null,"Senha ou usuário incorretos!");
             jTextField1.setText("");
             jPasswordField1.setText("");
         }

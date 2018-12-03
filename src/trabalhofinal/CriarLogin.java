@@ -16,18 +16,9 @@ import java.util.logging.Logger;
  * @author mylle
  */
 public class CriarLogin extends javax.swing.JFrame {
-
-   PrintStream server;
    
     public CriarLogin() {
-       try {
-            Socket cliente = new Socket("localhost", 12345);
-            System.out.println("o cliente se conectou ao servidor");
-            server = new PrintStream(cliente.getOutputStream());
-            initComponents();
-        } catch (IOException ex) {
-            Logger.getLogger(CriarLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
     }
 
     
@@ -115,7 +106,13 @@ public class CriarLogin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        server.println("CadLogin:" + jTextField1.getText()+","+jTextField2.getText());
+        String res = Connection.run("CreateUser:" + jTextField1.getText()+":"+jTextField2.getText());
+        
+        if(res.equalsIgnoreCase("SUCCESS:Usuário cadastrado com sucesso.")) {
+            Login login = new Login();
+            login.setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -5,17 +5,29 @@
  */
 package trabalhofinal;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mylle
  */
 public class Despesas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Despesas
-     */
+    PrintStream server;
+    
     public Despesas() {
-        initComponents();
+        try {
+            Socket cliente = new Socket("localhost", 12345);
+            System.out.println("o cliente se conectou ao servidor");
+            server = new PrintStream(cliente.getOutputStream());
+            initComponents();
+        } catch (IOException ex) {
+            Logger.getLogger(Despesas.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -61,10 +73,15 @@ public class Despesas extends javax.swing.JFrame {
         jLabel2.setText("Categoria:");
 
         jButton1.setText("Confirmar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Lugar:");
+        jLabel3.setText("Nome");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alimentação", "Transporte", "Aluguel" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alimentação", "Transporte", "Aluguel", "Compras" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,6 +143,12 @@ public class Despesas extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+                server.println("ADD  " + jTextField1.getText()+" "+jComboBox2.getSelectedIndex()+" "+jTextField3.getText());
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

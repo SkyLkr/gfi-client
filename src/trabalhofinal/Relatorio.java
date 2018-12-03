@@ -5,17 +5,29 @@
  */
 package trabalhofinal;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mylle
  */
 public class Relatorio extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Relatorio
-     */
+    PrintStream server;
+    
     public Relatorio() {
-        initComponents();
+         try {
+            Socket cliente = new Socket("localhost", 12345);
+            System.out.println("o cliente se conectou ao servidor");
+            server = new PrintStream(cliente.getOutputStream());
+            initComponents();
+        } catch (IOException ex) {
+            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -184,7 +196,6 @@ public class Relatorio extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        Relatorio relatorio = new Relatorio();
         if (jComboBox1.getSelectedItem().toString().equals("Despesas")){
             Despesas despesas = new Despesas();
             despesas.setVisible(true);

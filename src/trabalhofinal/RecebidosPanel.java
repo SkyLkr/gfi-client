@@ -102,7 +102,7 @@ public class RecebidosPanel extends javax.swing.JPanel {
         if (Double.parseDouble(valorField.getText()) < 0) {
             JOptionPane.showMessageDialog(null, "O valor não pode ser negativo", "Erro", JOptionPane.ERROR_MESSAGE);
         } else {
-            Connection.run("ADD:INCOME:" + valorField.getText()+":"+(jComboBox2.getSelectedIndex()+5)+":"+nomeField.getText());
+            Connection.run("ADD:INCOME:" + valorField.getText()+":"+(jComboBox2.getSelectedIndex()+5)+":"+nomeField.getText()+":true");
             valorField.setText("");
             nomeField.setText("");
         }

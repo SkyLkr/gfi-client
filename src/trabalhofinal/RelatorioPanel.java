@@ -5,6 +5,9 @@
  */
 package trabalhofinal;
 
+import java.awt.Color;
+import java.awt.Font;
+
 /**
  *
  * @author mylle
@@ -16,14 +19,23 @@ public class RelatorioPanel extends javax.swing.JPanel {
      */
     public RelatorioPanel() {
         initComponents();
-        saldoField.setText(Connection.run("GET:SALDO"));
-        recebidosField.setText(Connection.run("GET:RECEBIDOS"));
-        despesasField.setText(Connection.run("GET:DESPESAS"));
+        updateValues();
+    }
+    
+    public void updateValues() {
+        double saldo = Double.parseDouble(Connection.run("GET:SALDO"));
+        saldoField.setText("R$ " + saldo);
+        if (saldo < 0) saldoField.setForeground(Color.RED);
+        recebidosField.setText("R$ " + Connection.run("GET:RECEBIDOS"));
+        despesasField.setText("R$ " + Connection.run("GET:DESPESAS"));
         String res = Connection.run("GET:%");
         String[] porcent = res.split(";");
+        StringBuilder sb = new StringBuilder();
         for(String p: porcent){
-           textArea.setText(textArea.getText()+p+"\n");
+           sb.append(p);
+           sb.append("\n");
         }
+        textArea.setText(sb.toString());
     }
 
     /**
@@ -46,12 +58,15 @@ public class RelatorioPanel extends javax.swing.JPanel {
         despesasField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
+        textArea.setEditable(false);
         textArea.setColumns(20);
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Saldo: ");
+
+        saldoField.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Visão geral");
@@ -60,11 +75,14 @@ public class RelatorioPanel extends javax.swing.JPanel {
 
         jLabel5.setText("Despesas:");
 
+        recebidosField.setEditable(false);
         recebidosField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recebidosFieldActionPerformed(evt);
             }
         });
+
+        despesasField.setEditable(false);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Despesas por categorias");

@@ -5,6 +5,9 @@
  */
 package trabalhofinal;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 /**
  *
  * @author mylle
@@ -16,6 +19,16 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                System.out.println("Tab " + jTabbedPane1.getSelectedIndex());
+                if (jTabbedPane1.getSelectedIndex() == 0) {
+                    relatorioPanel1.updateValues();
+                }
+            }
+        });
     }
 
     /**
